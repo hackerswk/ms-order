@@ -1,0 +1,35 @@
+// Sample usage of updateOrder method
+$orderData = [
+    'id' => 123, // ID of the order to update
+    'store_id' => 1,
+    'hash_code' => 'ABC123',
+    'total_amount' => 120, // Updated total amount
+    'subtotal' => 110, // Updated subtotal
+    'delivery_fee' => 10, // Updated delivery fee
+    'discount' => 5,
+    'discount_info' => '5% discount applied',
+    'coupon' => 'COUPON123',
+    'payer_name' => 'John Doe',
+    'payer_mobile' => '1234567890',
+    'payer_phone' => '0987654321',
+    'payer_email' => 'john@example.com',
+    'remark' => 'Urgent delivery needed',
+    'custom_fields' => '{"field1": "value1", "field2": "value2"}',
+    'system_rtnmsg' => 'Success',
+    'user_comment' => 'User comments here',
+    'ip_address' => '127.0.0.1',
+    'user_agent' => 'Mozilla/5.0',
+    'status' => 1,
+    'currency' => 'USD',
+    'picking_up_at' => '2024-04-10 10:00:00',
+    'shipped_at' => '2024-04-12 12:00:00',
+    'deleted_at' => null // assuming this field is nullable
+];
+
+// Create MiniStoreOrders instance and initialize database connection
+$pdo = new PDO("mysql:host=localhost;dbname=your_database", "username", "password");
+$miniStoreOrders = new MiniStoreOrders($pdo);
+
+// Call updateOrder method with the updated order data
+$miniStoreOrders->updateOrder($orderData);
+
