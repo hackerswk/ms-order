@@ -121,4 +121,28 @@ EOF;
             echo "Error: " . $e->getMessage();
         }
     }
+
+    /**
+     * Fetches payments based on status.
+     *
+     * @param int $status Status of the payments
+     * @return array Fetched payments
+     */
+    public function getPaymentsByStatus($status)
+    {
+        try {
+            $sql = <<<EOF
+                SELECT * FROM ministore_order_payment
+                WHERE status = :status
+EOF;
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['status' => $status]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return [];
+        }
+    }
+
 }

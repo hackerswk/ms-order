@@ -155,4 +155,27 @@ EOF;
         }
     }
 
+    /**
+     * Fetches orders based on status.
+     *
+     * @param int $status Status of the orders
+     * @return array Fetched orders
+     */
+    public function getOrdersByStatus($status)
+    {
+        try {
+            $sql = <<<EOF
+                SELECT * FROM ministore_orders
+                WHERE status = :status
+EOF;
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['status' => $status]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return [];
+        }
+    }
+
 }
