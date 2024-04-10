@@ -178,4 +178,29 @@ EOF;
         }
     }
 
+    /**
+     * Retrieves an order record by ID and store ID.
+     *
+     * @param int $order_id Order ID
+     * @param int $store_id Store ID
+     * @return array|null Order data if found, else null
+     */
+    public function getOrderByIdAndStoreId($order_id, $store_id)
+    {
+        try {
+            $sql = <<<EOF
+            SELECT * FROM ministore_orders WHERE id = :order_id AND store_id = :store_id
+EOF;
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+            $stmt->bindParam(':store_id', $store_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
 }
