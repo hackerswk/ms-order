@@ -158,4 +158,30 @@ EOF;
         }
     }
 
+    /**
+     * Retrieves logistics information based on order ID and status.
+     *
+     * @param int $order_id Order ID
+     * @param int $status Status of the logistics
+     * @return array Fetched logistics information
+     */
+    public function getLogisticsByOrderIdAndStatus($order_id, $status)
+    {
+        try {
+            $sql = <<<EOF
+            SELECT * FROM ministore_order_logistics
+            WHERE order_id = :order_id AND status = :status
+EOF;
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+            $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return [];
+        }
+    }
+
 }

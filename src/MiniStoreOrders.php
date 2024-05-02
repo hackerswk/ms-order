@@ -203,4 +203,30 @@ EOF;
         }
     }
 
+    /**
+     * Retrieves orders based on site ID and status.
+     *
+     * @param int $siteId Site ID
+     * @param int $status Status of the orders
+     * @return array Fetched orders
+     */
+    public function getSiteOrders($siteId, $status)
+    {
+        try {
+            $sql = <<<EOF
+            SELECT * FROM ministore_orders
+            WHERE site_id = :site_id AND status = :status
+EOF;
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':site_id', $siteId, PDO::PARAM_INT);
+            $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return [];
+        }
+    }
+
 }
