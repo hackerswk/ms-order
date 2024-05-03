@@ -204,22 +204,22 @@ EOF;
     }
 
     /**
-     * Retrieves orders based on site ID and status.
+     * Retrieves orders based on store ID and status.
      *
-     * @param int $siteId Site ID
+     * @param int $storeId Store ID
      * @param int $status Status of the orders
      * @return array Fetched orders
      */
-    public function getSiteOrders($siteId, $status)
+    public function getStoreOrders($storeId, $status)
     {
         try {
             $sql = <<<EOF
             SELECT * FROM ministore_orders
-            WHERE site_id = :site_id AND status = :status
+            WHERE store_id = :store_id AND status = :status
 EOF;
 
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':site_id', $siteId, PDO::PARAM_INT);
+            $stmt->bindParam(':store_id', $storeId, PDO::PARAM_INT);
             $stmt->bindParam(':status', $status, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
