@@ -33,29 +33,29 @@ class MiniStoreOrders
     }
 
     /**
-     * Creates a new order record.
+     * Create a new order.
      *
      * @param array $data Order data
-     * @return void
+     * @return string|false
      */
     public function createOrder($data)
     {
         try {
             $sql = <<<EOF
                 INSERT INTO ministore_orders
-                (store_id, hash_code, total_amount, subtotal, delivery_fee, discount, discount_info, coupon, payer_name, payer_mobile,
-                payer_phone, payer_email, remark, custom_fields, system_rtnmsg, user_comment, ip_address, user_agent, status,
-                currency, picking_up_at, shipped_at, deleted_at, created_at, updated_at)
+                (store_id, mmid, total_amount, subtotal, shipping_delivery_fee, delivery_fee, order_delivery_fee, discount, payer_name, payer_mobile,
+                payer_phone, payer_email, remark, ip_address, user_agent, status,currency, created_at, updated_at)
                 VALUES
-                (:store_id, :hash_code, :total_amount, :subtotal, :delivery_fee, :discount, :discount_info, :coupon, :payer_name,
-                :payer_mobile, :payer_phone, :payer_email, :remark, :custom_fields, :system_rtnmsg, :user_comment, :ip_address,
-                :user_agent, :status, :currency, :picking_up_at, :shipped_at, :deleted_at, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
+                (:store_id, :mmid, :total_amount, :subtotal, :shipping_delivery_fee, :delivery_fee, :order_delivery_fee, :discount, :payer_name,
+                :payer_mobile, :payer_phone, :payer_email, :remark, :ip_address,:user_agent, :status, :currency, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
 EOF;
 
             $stmt = $this->conn->prepare($sql);
             $stmt->execute($data);
+            return $this->conn->lastInsertId();
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            error_log("Error: " . $e->getMessage());
+            return false;
         }
     }
 
