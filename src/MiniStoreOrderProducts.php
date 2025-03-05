@@ -33,30 +33,43 @@ class MiniStoreOrderProducts
     }
 
     /**
-     * Creates a new order product record.
+     * Creates a new order product record. (Bulk insert)
      *
-     * @param array $data Order product data.
-     * @return bool Returns false on failure, or true on success.
+     * @param array $data List of order products (each item is an associative array).
+     * @return bool Returns true on success, false on failure.
      */
-    public function createOrderProduct(array $data): bool
+    public function createOrderProducts(array $data): bool
     {
         try {
+            // 構建 SQL
             $sql = <<<SQL
                 INSERT INTO ministore_order_products (
                     order_id, product_id, specification_id, main_spec_id, sub_spec_id, title, image, price,
                     quantity, detail, google_category, primary_spec, sub_spec, conditions, availability, link,
                     created_at, updated_at
-                ) VALUES (
-                    :order_id, :product_id, :specification_id, :main_spec_id, :sub_spec_id, :title, :image, :price,
-                    :quantity, :detail, :google_category, :primary_spec, :sub_spec, :conditions, :availability, :link,
-                    CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()
-                )
+                ) VALUES
 SQL;
+            // 準備參數綁定
+            $values = [];
+            $params = [];
+            foreach ($products as $index => $product) {
+                $values[] = "(:order_id{$index}, :product_id{$index}, :specification_id{$index}, :main_spec_id{$index},
+                            :sub_spec_id{$index}, :title{$index}, :image{$index}, :price{$index}, :quantity{$index},
+                            :detail{$index}, :google_category{$index}, :primary_spec{$index}, :sub_spec{$index},
+                            :conditions{$index}, :availability{$index}, :link{$index}, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())";
+
+                foreach ($product as $key => $value) {
+                    $params[":{$key}{$index}"] = $value;
+                }
+            }
+
+            // 拼接 SQL
+            $sql .= implode(", ", $values);
 
             $stmt = $this->conn->prepare($sql);
             return $stmt->execute($data);
         } catch (PDOException $e) {
-            error_log('DB Insert Error: ' . $e->getMessage());
+            error_log('Product Bulk Insert Error: ' . $e->getMessage());
             return false;
         }
     }
