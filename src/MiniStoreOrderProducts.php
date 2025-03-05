@@ -35,23 +35,29 @@ class MiniStoreOrderProducts
     /**
      * Creates a new order product record.
      *
-     * @param array $data Order product data
-     * @return void
+     * @param array $data Order product data.
+     * @return bool Returns false on failure, or true on success.
      */
-    public function createOrderProduct($data)
+    public function createOrderProduct(array $data): bool
     {
         try {
-            $sql = <<<EOF
-                INSERT INTO ministore_order_products
-                (order_id, product_id, specification_id, title, image, price, quantity, google_category, primary_spec, sub_spec, conditions, availability, link, created_at, updated_at)
-                VALUES
-                (:order_id, :product_id, :specification_id, :title, :image, :price, :quantity, :google_category, :primary_spec, :sub_spec, :conditions, :availability, :link, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
-EOF;
+            $sql = <<<SQL
+                INSERT INTO ministore_order_products (
+                    order_id, product_id, specification_id, main_spec_id, sub_spec_id, title, image, price,
+                    quantity, detail, google_category, primary_spec, sub_spec, conditions, availability, link,
+                    created_at, updated_at
+                ) VALUES (
+                    :order_id, :product_id, :specification_id, :main_spec_id, :sub_spec_id, :title, :image, :price,
+                    :quantity, :detail, :google_category, :primary_spec, :sub_spec, :conditions, :availability, :link,
+                    CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()
+                )
+SQL;
 
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute($data);
+            return $stmt->execute($data);
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            error_log('DB Insert Error: ' . $e->getMessage());
+            return false;
         }
     }
 
