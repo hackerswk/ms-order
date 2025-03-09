@@ -44,10 +44,10 @@ class MiniStoreOrders
             $sql = <<<EOF
                 INSERT INTO ministore_orders
                 (store_id, mmid, total_amount, subtotal, shipping_delivery_fee, delivery_fee, order_delivery_fee, discount, payer_name, payer_mobile,
-                payer_phone, payer_email, remark, ip_address, user_agent, status,currency, created_at, updated_at)
+                payer_phone, payer_email, remark, ip_address, user_agent, status, created_at, updated_at)
                 VALUES
                 (:store_id, :mmid, :total_amount, :subtotal, :shipping_delivery_fee, :delivery_fee, :order_delivery_fee, :discount, :payer_name,
-                :payer_mobile, :payer_phone, :payer_email, :remark, :ip_address,:user_agent, :status, :currency, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
+                :payer_mobile, :payer_phone, :payer_email, :remark, :ip_address,:user_agent, :status, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
 EOF;
 
             $stmt = $this->conn->prepare($sql);
