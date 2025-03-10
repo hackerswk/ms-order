@@ -41,33 +41,51 @@ class MiniStoreOrderProducts
     public function createOrderProducts(array $data): bool
     {
         try {
-            // 構建 SQL
-            $sql = <<<SQL
-                INSERT INTO ministore_order_products (
-                    order_id, product_id, specification_id, main_spec_id, sub_spec_id, title, image, price,
-                    quantity, detail, google_category, primary_spec, sub_spec, conditions, availability, link,
-                    created_at, updated_at
-                ) VALUES
-SQL;
-            // 準備參數綁定
-            $values = [];
-            $params = [];
-            foreach ($data as $index => $product) {
-                $values[] = "(:order_id{$index}, :product_id{$index}, :specification_id{$index}, :main_spec_id{$index},
-                            :sub_spec_id{$index}, :title{$index}, :image{$index}, :price{$index}, :quantity{$index},
-                            :detail{$index}, :google_category{$index}, :primary_spec{$index}, :sub_spec{$index},
-                            :conditions{$index}, :availability{$index}, :link{$index}, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())";
+            // 先準備列名
+        $columns = [
+            'order_id', 'product_id', 'specification_id', 'main_spec_id', 'sub_spec_id', 'title',
+            'image', 'price', 'quantity', 'detail', 'google_category', 'primary_spec',
+            'sub_spec', 'conditions', 'availability', 'link', 'created_at', 'updated_at'
+        ];
 
-                foreach ($product as $key => $value) {
-                    $params[":{$key}{$index}"] = $value;
+        // 構建 SQL 的欄位部分
+        $sql = "INSERT INTO ministore_order_products (" . implode(", ", $columns) . ") VALUES ";
+
+        $placeholders = [];
+        $params = [];
+        $now = date('Y-m-d H:i:s');
+
+        foreach ($data as $index => $product) {
+            $rowPlaceholders = [];
+
+            foreach ($columns as $column) {
+                // 處理時間戳欄位
+                if ($column === 'created_at' || $column === 'updated_at') {
+                    $paramName = ":{$column}{$index}";
+                    $params[$paramName] = $now;
+                    $rowPlaceholders[] = $paramName;
+                }
+                // 處理其他欄位
+                else {
+                    $paramName = ":{$column}{$index}";
+                    $params[$paramName] = $product[$column] ?? null;
+                    $rowPlaceholders[] = $paramName;
                 }
             }
 
-            // 拼接 SQL
-            $sql .= implode(", ", $values);
+            $placeholders[] = "(" . implode(", ", $rowPlaceholders) . ")";
+        }
 
-            $stmt = $this->conn->prepare($sql);
-            return $stmt->execute($data);
+        $sql .= implode(", ", $placeholders);
+
+        $stmt = $this->conn->prepare($sql);
+
+        // 綁定所有參數
+        foreach ($params as $param => $value) {
+            $stmt->bindValue($param, $value);
+        }
+
+        return $stmt->execute();
         } catch (PDOException $e) {
             error_log('Product Bulk Insert Error: ' . $e->getMessage());
             return false;
