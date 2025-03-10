@@ -41,17 +41,18 @@ class MiniStoreOrderPayment
     public function createOrderPayment($data)
     {
         try {
-            $sql = <<<EOF
+            $sql = <<<SQL
                 INSERT INTO ministore_order_payment
-                (order_id, vendor_id, payment_method, payment_no, payment_date, extra_data, status, created_at, updated_at)
+                (order_id, vendor_id, payment_method, created_at, updated_at)
                 VALUES
-                (:order_id, :vendor_id, :payment_method, :payment_no, :payment_date, :extra_data, :status, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
-EOF;
+                (:order_id, :vendor_id, :payment_method, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
+SQL;
 
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute($data);
+            return $stmt->execute($data);
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            error_log("Create Order Payment Error: " . $e->getMessage());
+            return false;
         }
     }
 
