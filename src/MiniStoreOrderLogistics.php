@@ -43,13 +43,13 @@ class MiniStoreOrderLogistics
         try {
             $sql = <<<SQL
                 INSERT INTO ministore_order_logistics
-                (order_id, vendor_logistics, logistics_method, logistics_type,
+                (order_id, service_id, vendor_logistics, logistics_method, logistics_type,
                 recipient_name, recipient_mobile, recipient_zip_code, recipient_address, sender_name,
                 sender_mobile, sender_phone, sender_zip_code, sender_address, cvs_id, cvs_name, cvs_address,
                 cvs_delivery_type, home_temperature, home_specification, home_pickup_time, home_delivery_time,
                 cash_on_delivery)
                 VALUES
-                (:order_id, :vendor_logistics, :logistics_method, :logistics_type,
+                (:order_id, :service_id, :vendor_logistics, :logistics_method, :logistics_type,
                 :recipient_name, :recipient_mobile, :recipient_zip_code, :recipient_address, :sender_name,
                 :sender_mobile, :sender_phone, :sender_zip_code, :sender_address, :cvs_id, :cvs_name, :cvs_address,
                 :cvs_delivery_type, :home_temperature, :home_specification, :home_pickup_time, :home_delivery_time,
