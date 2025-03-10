@@ -41,23 +41,26 @@ class MiniStoreOrderLogistics
     public function createOrderLogistics($data)
     {
         try {
-            $sql = <<<EOF
+            $sql = <<<SQL
                 INSERT INTO ministore_order_logistics
-                (order_id, vendor_logistics, logistics_method, logistics_no, logistics_type, delivery_date, delivery_no,
-                recipient_name, recipient_mobile, recipient_phone, recipient_zip_code, recipient_address, sender_name,
-                sender_mobile, sender_phone, sender_zip_code, sender_address, cvs_id, cvs_name, cvs_address, cvs_delivery_type,
-                home_temperature, home_distance, home_specification, home_pickup_time, home_delivery_time, extra_data, cash_on_delivery, status)
+                (order_id, vendor_logistics, logistics_method, logistics_no, logistics_type,
+                recipient_name, recipient_mobile, recipient_zip_code, recipient_address, sender_name,
+                sender_mobile, sender_phone, sender_zip_code, sender_address, cvs_id, cvs_name, cvs_address,
+                cvs_delivery_type, home_temperature, home_specification, home_pickup_time, home_delivery_time,
+                cash_on_delivery)
                 VALUES
-                (:order_id, :vendor_logistics, :logistics_method, :logistics_no, :logistics_type, :delivery_date, :delivery_no,
-                :recipient_name, :recipient_mobile, :recipient_phone, :recipient_zip_code, :recipient_address, :sender_name,
-                :sender_mobile, :sender_phone, :sender_zip_code, :sender_address, :cvs_id, :cvs_name, :cvs_address, :cvs_delivery_type,
-                :home_temperature, :home_distance, :home_specification, :home_pickup_time, :home_delivery_time, :extra_data, :cash_on_delivery, :status)
-EOF;
+                (:order_id, :vendor_logistics, :logistics_method, :logistics_no, :logistics_type,
+                :recipient_name, :recipient_mobile, :recipient_zip_code, :recipient_address, :sender_name,
+                :sender_mobile, :sender_phone, :sender_zip_code, :sender_address, :cvs_id, :cvs_name, :cvs_address,
+                :cvs_delivery_type, :home_temperature, :home_specification, :home_pickup_time, :home_delivery_time,
+                :cash_on_delivery)
+SQL;
 
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute($data);
+            return $stmt->execute($data);
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            error_log("Create Order Logistics Error: " . $e->getMessage());
+            return false;
         }
     }
 
