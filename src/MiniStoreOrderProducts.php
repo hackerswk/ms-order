@@ -52,7 +52,7 @@ SQL;
             // 準備參數綁定
             $values = [];
             $params = [];
-            foreach ($products as $index => $product) {
+            foreach ($data as $index => $product) {
                 $values[] = "(:order_id{$index}, :product_id{$index}, :specification_id{$index}, :main_spec_id{$index},
                             :sub_spec_id{$index}, :title{$index}, :image{$index}, :price{$index}, :quantity{$index},
                             :detail{$index}, :google_category{$index}, :primary_spec{$index}, :sub_spec{$index},
