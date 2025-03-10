@@ -36,9 +36,9 @@ class MiniStoreOrderPayment
      * Creates a new order payment record.
      *
      * @param array $data Order payment data
-     * @return void
+     * @return bool
      */
-    public function createOrderPayment($data)
+    public function createOrderPayment(array $data):bool
     {
         try {
             $sql = <<<SQL
