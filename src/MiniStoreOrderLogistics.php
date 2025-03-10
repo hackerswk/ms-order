@@ -36,7 +36,7 @@ class MiniStoreOrderLogistics
      * Creates a new order logistics record.
      *
      * @param array $data Order logistics data
-     * @return void
+     * @return bool
      */
     public function createOrderLogistics($data)
     {
