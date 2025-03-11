@@ -83,22 +83,21 @@ EOF;
      * Updates an existing order payment record.
      *
      * @param array $data Updated order payment data
-     * @return void
+     * @return bool
      */
     public function updateOrderPayment($data)
     {
         try {
-            $sql = <<<EOF
+            $sql = <<<SQL
                 UPDATE ministore_order_payment
-                SET vendor_id = :vendor_id, payment_method = :payment_method, payment_no = :payment_no, payment_date = :payment_date,
-                extra_data = :extra_data, status = :status, updated_at = CURRENT_TIMESTAMP()
+                SET payment_no = :payment_no, payment_date = :payment_date, status = :status
                 WHERE order_id = :order_id
-EOF;
-
+SQL;
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute($data);
+            return $stmt->execute($data);
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            echo "Update Order Payment Error: " . $e->getMessage();
+            return false;
         }
     }
 
