@@ -80,7 +80,8 @@ EOF;
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $logistics = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $logistics ? $logistics : null;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return null;

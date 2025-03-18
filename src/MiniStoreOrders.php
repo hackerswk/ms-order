@@ -75,7 +75,8 @@ EOF;
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $order = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $order ? $order : null;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return null;
@@ -196,7 +197,8 @@ EOF;
             $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
             $stmt->bindParam(':store_id', $store_id, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $order = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $order ? $order : null;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return null;
@@ -228,5 +230,4 @@ EOF;
             return [];
         }
     }
-
 }
