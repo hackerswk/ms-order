@@ -50,7 +50,7 @@ class OrderPaymentStatus
             self::FAILED => 'orders.pay_unsuccess',
             self::REFUNDING => '退款中',
             self::REFUNDED => 'orders.refunded',
-            self::REFUNDED => '無須付款',
+            self::NO_PAYMENT_REQUIRED => '無須付款',
         ];
         return $labels[$status] ?? '未知狀態';
     }
