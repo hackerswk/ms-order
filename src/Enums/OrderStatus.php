@@ -24,7 +24,7 @@ class OrderStatus
     const CANCEL = 0;
     const ESTABLISH = 1;
 
-    protected $labels = [
+    protected static $labels = [
         self::CANCEL => 'orders.order_cancel',
         self::ESTABLISH => 'orders.order_confirm'
     ];
@@ -43,5 +43,17 @@ class OrderStatus
     public static function getLabel(int $status): string
     {
         return self::$labels[$status] ?? 'orders.order_confirm';
+    }
+
+    /**
+     * 取得所有訂單狀態的標籤
+     *
+     * 回傳所有可用訂單狀態的對應標籤陣列
+     * 
+     * @return array<string,string> 訂單狀態標籤的關聯陣列，鍵為狀態代碼，值為對應的顯示標籤
+     */
+    public static function getLabels(): array
+    {
+        return self::$labels;
     }
 }

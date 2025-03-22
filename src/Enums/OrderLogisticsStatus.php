@@ -28,7 +28,7 @@ class OrderLogisticsStatus
     const RECEIVED = 2;
     const DIGITAL_DELIVERY = 3;
 
-    protected $labels = [
+    protected static $labels = [
         self::PENDING => 'orders.not_ship',
         self::SHIPPED => 'orders.shipped',
         self::RECEIVED => 'orders.picked_up',
@@ -45,5 +45,17 @@ class OrderLogisticsStatus
     public static function getLabel(int $status): string
     {
         return self::$labels[$status] ?? '未知狀態';
+    }
+
+    /**
+     * 取得所有訂單物流狀態的標籤
+     *
+     * 回傳所有可用訂單物流狀態的對應標籤陣列
+     * 
+     * @return array<string,string> 訂單物流狀態標籤的關聯陣列，鍵為狀態代碼，值為對應的顯示標籤
+     */
+    public static function getLabels(): array
+    {
+        return self::$labels;
     }
 }

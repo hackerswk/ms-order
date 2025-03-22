@@ -33,7 +33,7 @@ class OrderPaymentStatus
     const REFUNDED = 4;
     const NO_PAYMENT_REQUIRED = 5;
 
-    protected $labels = [
+    protected static $labels = [
         self::UNPAID => 'orders.unpaid',
         self::PAID => 'orders.paid',
         self::FAILED => 'orders.pay_unsuccess',
@@ -54,5 +54,17 @@ class OrderPaymentStatus
     public static function getLabel(int $status): string
     {
         return self::$labels[$status] ?? '未知狀態';
+    }
+
+    /**
+     * 取得所有訂單付款狀態的標籤
+     *
+     * 回傳所有可用訂單付款狀態的對應標籤陣列
+     * 
+     * @return array<string,string> 訂單付款狀態標籤的關聯陣列，鍵為狀態代碼，值為對應的顯示標籤
+     */
+    public static function getLabels(): array
+    {
+        return self::$labels;
     }
 }
