@@ -28,6 +28,13 @@ class OrderLogisticsStatus
     const RECEIVED = 2;
     const DIGITAL_DELIVERY = 3;
 
+    protected $labels = [
+        self::PENDING => 'orders.not_ship',
+        self::SHIPPED => 'orders.shipped',
+        self::RECEIVED => 'orders.picked_up',
+        self::DIGITAL_DELIVERY => '數位交付',
+    ];
+
     /**
      * 根據物流狀態代碼取得對應的標籤文字
      *
@@ -37,13 +44,6 @@ class OrderLogisticsStatus
      */
     public static function getLabel(int $status): string
     {
-        $labels = [
-            self::PENDING => 'orders.not_ship',
-            self::SHIPPED => 'orders.shipped',
-            self::RECEIVED => 'orders.picked_up',
-            self::DIGITAL_DELIVERY => '數位交付',
-        ];
-
-        return $labels[$status] ?? '未知狀態';
+        return self::$labels[$status] ?? '未知狀態';
     }
 }

@@ -33,6 +33,15 @@ class OrderPaymentStatus
     const REFUNDED = 4;
     const NO_PAYMENT_REQUIRED = 5;
 
+    protected $labels = [
+        self::UNPAID => 'orders.unpaid',
+        self::PAID => 'orders.paid',
+        self::FAILED => 'orders.pay_unsuccess',
+        self::REFUNDING => '退款中',
+        self::REFUNDED => 'orders.refunded',
+        self::NO_PAYMENT_REQUIRED => '無須付款',
+    ];
+
     /**
      * 取得訂單付款狀態對應的標籤文字
      * 
@@ -44,14 +53,6 @@ class OrderPaymentStatus
      */
     public static function getLabel(int $status): string
     {
-        $labels = [
-            self::UNPAID => 'orders.unpaid',
-            self::PAID => 'orders.paid',
-            self::FAILED => 'orders.pay_unsuccess',
-            self::REFUNDING => '退款中',
-            self::REFUNDED => 'orders.refunded',
-            self::NO_PAYMENT_REQUIRED => '無須付款',
-        ];
-        return $labels[$status] ?? '未知狀態';
+        return self::$labels[$status] ?? '未知狀態';
     }
 }
