@@ -67,4 +67,23 @@ class OrderPaymentStatus
     {
         return self::$labels;
     }
+
+    /**
+     * 取得所有訂單付款狀態代碼
+     *
+     * 回傳所有可用的訂單付款狀態代碼
+     * 
+     * @return array<int> 訂單付款狀態代碼陣列
+     */
+    public static function getStatuses(): array
+    {
+        return [
+            self::UNPAID,
+            self::PAID, 
+            self::FAILED,
+            self::REFUNDING,
+            self::REFUNDED,
+            self::NO_PAYMENT_REQUIRED
+        ];
+    }
 }

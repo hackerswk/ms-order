@@ -58,4 +58,21 @@ class OrderLogisticsStatus
     {
         return self::$labels;
     }
+
+    /**
+     * 取得所有訂單物流狀態代碼
+     *
+     * 回傳所有可用的訂單物流狀態代碼
+     * 
+     * @return array<int> 訂單物流狀態代碼陣列
+     */
+    public static function getStatuses(): array
+    {
+        return [
+            self::PENDING,
+            self::SHIPPED, 
+            self::RECEIVED,
+            self::DIGITAL_DELIVERY
+        ];
+    }
 }

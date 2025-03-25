@@ -56,4 +56,19 @@ class OrderStatus
     {
         return self::$labels;
     }
+
+    /**
+     * 取得所有訂單狀態代碼
+     *
+     * 回傳所有可用的訂單狀態代碼
+     * 
+     * @return array<int> 訂單狀態代碼陣列
+     */
+    public static function getStatuses(): array
+    {
+        return [
+            self::CANCEL,
+            self::ESTABLISH,
+        ];
+    }
 }
