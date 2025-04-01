@@ -45,7 +45,7 @@ class MiniStoreOrderPayment
                 INSERT INTO ministore_order_payment
                 (order_id, vendor_id, service_provider, payment_method, payment_type, payment_no, created_at, updated_at)
                 VALUES
-                (:order_id, :vendor_id, :service_provider, :payment_method, :payment_type, payment_no, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
+                (:order_id, :vendor_id, :service_provider, :payment_method, :payment_type, :payment_no, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
 SQL;
 
             $stmt = $this->conn->prepare($sql);
