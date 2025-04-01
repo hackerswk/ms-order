@@ -102,6 +102,25 @@ SQL;
         }
     }
 
+    public function updateTradeNo(int $orderId, string $tradeNo): bool
+    {
+        try {
+            $sql = <<<SQL
+                UPDATE ministore_order_payment
+                SET trade_no = :trade_no
+                WHERE order_id = :order_id
+SQL;
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([
+                ':trade_no' => $tradeNo,
+                ':order_id' => $orderId
+            ]);
+        } catch (PDOException $e) {
+            error_log("Update Order TradeNo Error: " . $e->getMessage());
+            return false;
+        }
+    }
+
     /**
      * Deletes an order payment record by order ID.
      *
