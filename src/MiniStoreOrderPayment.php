@@ -91,7 +91,7 @@ EOF;
         try {
             $sql = <<<SQL
                 UPDATE ministore_order_payment
-                SET payment_no = :payment_no, payment_date = :payment_date, status = :status
+                SET trade_no = :trade_no, payment_date = :payment_date, status = :status
                 WHERE order_id = :order_id
 SQL;
             $stmt = $this->conn->prepare($sql);
@@ -102,21 +102,28 @@ SQL;
         }
     }
 
-    public function updateTradeNo(int $orderId, string $tradeNo): bool
+    /**
+     * 更新訂單支付編號 (系統產生)
+     *
+     * @param int $orderId 訂單ID
+     * @param string $paymentNo 支付編號
+     * @return bool
+     */
+    public function updatePaymentNo(int $orderId, string $paymentNo): bool
     {
         try {
             $sql = <<<SQL
                 UPDATE ministore_order_payment
-                SET trade_no = :trade_no
+                SET payment_no = :payment_no
                 WHERE order_id = :order_id
 SQL;
             $stmt = $this->conn->prepare($sql);
             return $stmt->execute([
-                ':trade_no' => $tradeNo,
+                ':payment_no' => $paymentNo,
                 ':order_id' => $orderId
             ]);
         } catch (PDOException $e) {
-            error_log("Update Order TradeNo Error: " . $e->getMessage());
+            error_log("Update Order PaymentNo Error: " . $e->getMessage());
             return false;
         }
     }
