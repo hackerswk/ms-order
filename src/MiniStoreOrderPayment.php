@@ -43,9 +43,9 @@ class MiniStoreOrderPayment
         try {
             $sql = <<<SQL
                 INSERT INTO ministore_order_payment
-                (order_id, vendor_id, service_provider, payment_method, payment_type, created_at, updated_at)
+                (order_id, vendor_id, service_provider, payment_method, payment_type, payment_no, created_at, updated_at)
                 VALUES
-                (:order_id, :vendor_id, :service_provider, :payment_method, :payment_type, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
+                (:order_id, :vendor_id, :service_provider, :payment_method, :payment_type, payment_no, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
 SQL;
 
             $stmt = $this->conn->prepare($sql);
@@ -98,32 +98,6 @@ SQL;
             return $stmt->execute($data);
         } catch (PDOException $e) {
             echo "Update Order Payment Error: " . $e->getMessage();
-            return false;
-        }
-    }
-
-    /**
-     * 更新訂單支付編號 (系統產生)
-     *
-     * @param int $orderId 訂單ID
-     * @param string $paymentNo 支付編號
-     * @return bool
-     */
-    public function updatePaymentNo(int $orderId, string $paymentNo): bool
-    {
-        try {
-            $sql = <<<SQL
-                UPDATE ministore_order_payment
-                SET payment_no = :payment_no
-                WHERE order_id = :order_id
-SQL;
-            $stmt = $this->conn->prepare($sql);
-            return $stmt->execute([
-                ':payment_no' => $paymentNo,
-                ':order_id' => $orderId
-            ]);
-        } catch (PDOException $e) {
-            error_log("Update Order PaymentNo Error: " . $e->getMessage());
             return false;
         }
     }
